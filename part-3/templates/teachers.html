@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teachers</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        h1 { color: #333; }
+        .teacher-card { background: white; padding: 20px; margin: 10px 0; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 8px 16px; color: white; text-decoration: none; border-radius: 5px; margin: 3px; font-size: 14px; }
+        .btn-add { background: #4CAF50; padding: 12px 24px; }
+        .btn-edit { background: #2196F3; }
+        .btn-delete { background: #f44336; }
+        .btn:hover { opacity: 0.8; }
+        .flash { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .flash.success { background: #d4edda; color: #155724; }
+        .flash.danger { background: #f8d7da; color: #721c24; }
+        .course-badge { background: #9b59b6; color: white; padding: 4px 8px; border-radius: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Teachers Management</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <a href="{{ url_for('add_teacher') }}" class="btn btn-add">+ Add Teacher</a>
+    <a href="{{ url_for('index') }}" class="btn" style="background: #2196F3;">Students</a>
+    <a href="{{ url_for('courses') }}" class="btn" style="background: #ff9800;">Courses</a>
+    
+    {% if teachers %}
+        {% for teacher in teachers %}
+        <div class="teacher-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3>{{ teacher.name }}</h3>
+                    <p><strong>Email:</strong> {{ teacher.email }}</p>
+                    <p><strong>Course:</strong> 
+                        <span class="course-badge">{{ teacher.course.name }}</span>
+                    </p>
+                </div>
+                <div>
+                    <a href="{{ url_for('edit_teacher', id=teacher.id) }}" class="btn btn-edit">Edit</a>
+                    <a href="{{ url_for('delete_teacher', id=teacher.id) }}" class="btn btn-delete"
+                       onclick="return confirm('Delete {{ teacher.name }}?')">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <p style="text-align: center; color: #666;"><strong>Total: {{ teachers|length }} teachers</strong></p>
+    {% else %}
+        <p style="text-align: center; color: #888;">No teachers. <a href="{{ url_for('add_teacher') }}">Add first!</a></p>
+    {% endif %}
+</body>
+</html>

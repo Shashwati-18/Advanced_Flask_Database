@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f4f8; }
+        h1 { color: #2c3e50; }
+        form { background: white; padding: 30px; border-radius: 8px; max-width: 400px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, select { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; }
+        .btn-submit { background: #27ae60; color: white; }
+        .btn-cancel { background: #95a5a6; color: white; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Add New Student</h1>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" required>
+        
+        <label>Email:</label>
+        <input type="email" name="email" required>
+        
+        <label>Course:</label>
+        <select name="course_id" required>
+            {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.name }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit" class="btn btn-submit">Add Student</button>
+        <a href="{{ url_for('index') }}" class="btn btn-cancel">Cancel</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Course</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f4f8; }
+        h1 { color: #2c3e50; }
+        form { background: white; padding: 30px; border-radius: 8px; max-width: 500px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, textarea, select { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 100px; resize: vertical; }
+        .btn { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; color: white; }
+        .btn-submit { background: #27ae60; }
+        .btn-cancel { background: #95a5a6; margin-left: 10px; }
+        .flash { padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .flash.success { background: #d4edda; color: #155724; }
+        .flash.danger { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Add New Course</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="name">Course Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" placeholder="Optional course description"></textarea>
+        
+        <!-- NEW TEACHER FIELD -->
+        <label for="teacher_id">Assign Teacher:</label>
+        <select id="teacher_id" name="teacher_id" required>
+            <option value="">Select Teacher</option>
+            {% for teacher in teachers %}
+                <option value="{{ teacher.id }}">{{ teacher.name }} ({{ teacher.email }})</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit" class="btn btn-submit">Add Course</button>
+        <a href="{{ url_for('courses') }}" class="btn btn-cancel">Cancel</a>
+    </form>
+</body>
+</html>
